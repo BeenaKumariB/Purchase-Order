@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions 
+	name="purchaseService" 
+	targetNamespace="http://example.com/types/helloworld" 
+	xmlns:tns="http://example.com/types/helloworld"
+	xmlns:types="http://example.com/types/helloworld"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+  <wsdl:types>
+    <xsd:schema 
+    	targetNamespace="http://example.com/types/helloworld" 
+    	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    	elementFormDefault="qualified"
+      	attributeFormDefault="unqualified" 
+      	version="1.0" >
+
+      
+       <xsd:complexType name="purchaseType">
+         <xsd:sequence>
+           <xsd:element name="purchaseid" type="xsd:long" />
+           <xsd:element name="userid" type="xsd:long" />
+           <xsd:element name="sitename" type="xsd:string" />
+           <xsd:element name="projectname" type="xsd:string" />
+           <xsd:element name="projectType" type="xsd:string" />
+           <xsd:element name="siteProjectid" type="xsd:string" />
+           <xsd:element name="shiptoLocationCode" type="xsd:long" />
+           <xsd:element name="duedate" type="xsd:date" />
+           <xsd:element name="quantity" type="xsd:long" />
+           <xsd:element name="totalcost" type="xsd:long" />
+           <xsd:element name="status" type="xsd:string" />
+           <xsd:element name="productname" type="xsd:string" />
+         </xsd:sequence>
+       </xsd:complexType>
+     
+      <xsd:complexType name="purchaseListType">
+      	<xsd:sequence>
+      		<xsd:element name="list" type="tns:purchaseType" minOccurs="0" maxOccurs="unbounded" />
+      	</xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:element name="purchase" type="tns:purchaseType"/>
+      <xsd:element name="purchaselist" type="tns:purchaseListType" />
+      
+    </xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="purchaseRequest">
+    <wsdl:part name="purchaseRequest" element="tns:purchase" >
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="purchaseResponse">
+    <wsdl:part name="purchaseResponse" element="tns:purchaselist">
+    </wsdl:part>
+  </wsdl:message>
+ 
+  <wsdl:portType name="IPurchasePortType">
+  
+    <wsdl:operation name="getPurchases">
+      <wsdl:input message="tns:purchaseRequest" name="purchaseRequest" >
+      </wsdl:input>
+      <wsdl:output message="tns:purchaseResponse" name="purchaseResponse" >
+      </wsdl:output>
+    </wsdl:operation>
+    
+  </wsdl:portType>
+
+
+
+  <wsdl:binding name="PurchaseServiceSoapBinding" type="tns:IPurchasePortType">
+  
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    
+    <wsdl:operation name="getPurchases">
+      
+      <soap:operation soapAction="" style="document" />
+      
+      <wsdl:input name="purchaseRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      
+      <wsdl:output name="purchaseResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      
+    </wsdl:operation>
+    
+  </wsdl:binding>
+
+
+
+
+  <wsdl:service name="purchaseService">
+  
+    <wsdl:documentation>Soap Application</wsdl:documentation>
+    <wsdl:port binding="tns:PurchaseServiceSoapBinding" name="IPurchasePortType" >
+      <soap:address location="http://localhost:8080/example/ws/helloworld" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
